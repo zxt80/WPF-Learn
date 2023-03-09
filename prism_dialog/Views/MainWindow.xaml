@@ -1,0 +1,10 @@
+﻿<Window x:Class="prism_dialog.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Height="350" Width="525" >
+    <Grid>
+        <Button Content="打开弹窗" Command="{Binding OpenCommand}" CommandParameter="MyDialog" Width="60" Height="40"></Button>
+    </Grid>
+</Window>

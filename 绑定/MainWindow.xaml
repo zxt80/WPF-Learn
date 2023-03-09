@@ -1,0 +1,65 @@
+﻿<Window
+    x:Class="绑定.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:绑定"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel>
+            <Slider x:Name="slider" Margin="5" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="100"
+                    Height="32"
+                    Text="{Binding ElementName=slider, Path=Value, Mode=Default}" />
+                <TextBox Text="Mode=Default" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="100"
+                    Height="32"
+                    Text="{Binding ElementName=slider, Path=Value, Mode=OneTime}" />
+                <TextBox Text="Mode=OneTime" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="100"
+                    Height="32"
+                    Text="{Binding ElementName=slider, Path=Value, Mode=OneWay}" />
+                <TextBox Text="Mode=OneWay" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="100"
+                    Height="32"
+                    Text="{Binding ElementName=slider, Path=Value, Mode=OneWayToSource}" />
+                <TextBox Text="Mode=OneWayToSource" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="100"
+                    Height="32"
+                    Text="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" />
+                <TextBox Text="Mode=TwoWay" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="200"
+                    Height="32"
+                    Text="{Binding Name}" />
+                <TextBlock>属性绑定</TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding ShowCmd}" Content="按钮" />
+                <TextBlock>命令绑定</TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
