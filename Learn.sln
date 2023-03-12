@@ -39,7 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "prism_dialog", "prism_dialo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo", "MyToDo\MyToDo.csproj", "{9B96E4E8-8005-4B1B-8B2B-1BD819E52282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyToDo.api", "MyToDo.api\MyToDo.api.csproj", "{CB2B9966-FFB4-4C4B-ABF6-0069C1C1C903}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.api", "MyToDo.api\MyToDo.api.csproj", "{CB2B9966-FFB4-4C4B-ABF6-0069C1C1C903}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitOfWork", "UnitOfWork\src\UnitOfWork\UnitOfWork.csproj", "{515FCD80-4E02-4962-A2D5-F9EACA6E1EBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,10 @@ Global
 		{CB2B9966-FFB4-4C4B-ABF6-0069C1C1C903}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB2B9966-FFB4-4C4B-ABF6-0069C1C1C903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB2B9966-FFB4-4C4B-ABF6-0069C1C1C903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{515FCD80-4E02-4962-A2D5-F9EACA6E1EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{515FCD80-4E02-4962-A2D5-F9EACA6E1EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{515FCD80-4E02-4962-A2D5-F9EACA6E1EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{515FCD80-4E02-4962-A2D5-F9EACA6E1EBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

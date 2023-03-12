@@ -1,9 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using MyToDo.api.Context.Repository;
-using MyToDo.api.Context;
-using Arch.EntityFrameworkCore.UnitOfWork;
-using MyToDo.api.Service;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,8 +24,6 @@ builder.Services.AddUnitOfWork<MyToDoContext>();
 builder.Services.AddCustomRepository<ToDo, ToDoRepository>();
 builder.Services.AddCustomRepository<Memo, MemoRepository>();
 builder.Services.AddCustomRepository<User, UserRepository>();
-
-builder.Services.AddTransient<IToDoService, ToDoService>();
 
 
 var app = builder.Build();
