@@ -1,21 +1,26 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
+using AutoMapper;
 using MyToDo.api.Context;
+using MyToDo.shared.Dtos;
 
 namespace MyToDo.api.Service
 {
     public class ToDoService : IToDoService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ToDoService(IUnitOfWork unitOfWork)
+        public ToDoService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<APIResponse> AddAsync(ToDo model)
+        public async Task<APIResponse> AddAsync(ToDoDto model)
         {
             try
             {
-                await _unitOfWork.GetRepository<ToDo>().InsertAsync(model);
+                var todo = _mapper.Map<ToDo>(model);
+                await _unitOfWork.GetRepository<ToDo>().InsertAsync(todo);
                 if (await _unitOfWork.SaveChangesAsync() > 0)
                     return new APIResponse(true, model);
                 return new APIResponse("添加数据失败");
@@ -72,15 +77,16 @@ namespace MyToDo.api.Service
             }
         }
 
-        public async Task<APIResponse> UpdateAsync(ToDo model)
+        public async Task<APIResponse> UpdateAsync(ToDoDto model)
         {
             try
             {
+                var todoOld = _mapper.Map<ToDo>(model);
                 var repository = _unitOfWork.GetRepository<ToDo>();
                 var todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
-                todo.Title = model.Title;
-                todo.Context = model.Context;
-                todo.Status = model.Status;
+                todo.Title = todoOld.Title;
+                todo.Content = todoOld.Content;
+                todo.Status = todoOld.Status;
                 todo.UpdateTime = DateTime.Now;
                 repository.Update(todo);
 
