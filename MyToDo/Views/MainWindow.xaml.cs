@@ -16,10 +16,13 @@ namespace MyToDo.Views
 
             this.ColorZone.MouseDoubleClick += ColorZone_MouseDoubleClick;
             this.ColorZone.MouseMove += ColorZone_MouseMove;
+            this.menuBar.SelectionChanged += MenuBar_SelectionChanged;
 
-            MenuToggleButton.Click += (s, e) => {
-                DemoItemsSearchBox.Focus();
-            };
+        }
+
+        private void MenuBar_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            this.Drawer.IsLeftDrawerOpen = false;
         }
 
         private void ColorZone_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)

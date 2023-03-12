@@ -7,7 +7,57 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\IndexView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MemoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MoreView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\NewToDoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PersonalizeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SettingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SystemView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ToDoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\IndexView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MemoView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MoreView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NewToDoView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PersonalizeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SystemView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ToDoView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
