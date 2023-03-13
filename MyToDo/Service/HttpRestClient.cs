@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace MyToDo.Service
 {
-    internal class HttpRestClient
+    public class HttpRestClient
     {
         private readonly string _apiUrl;
 
@@ -35,9 +35,10 @@ namespace MyToDo.Service
             return JsonConvert.DeserializeObject<ApiResponse>(response.Content);
         }
 
-        public async Task<T> ExcluteAsync<T>(BaseRequest parameter)
+        public async Task<ApiResponse<T>> ExcluteAsync<T>(BaseRequest parameter)
         {
             var request = new RestRequest();
+            request.Method = parameter.Method;
             request.AddHeader("Content-Type", parameter.ContentType);
 
             if (parameter.Parameter != null)
@@ -45,11 +46,20 @@ namespace MyToDo.Service
                     "param", JsonConvert.SerializeObject(parameter.Parameter),
                     ParameterType.RequestBody);
 
-            var client = new RestClient(_apiUrl + parameter.Route);
+            string url = _apiUrl + parameter.Route;
+            RestClient client = new RestClient(url);
+
 
             var response = await client.ExecuteAsync(request);
 
-            return JsonConvert.DeserializeObject<T>(response.Content);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                ApiResponse<T> data = JsonConvert.DeserializeObject<ApiResponse<T>>(response.Content);
+                return data;
+            }
+            else
+                return new ApiResponse<T>(response.ErrorMessage);
+                
         }
     }
 }

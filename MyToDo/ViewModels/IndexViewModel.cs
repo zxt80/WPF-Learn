@@ -1,4 +1,5 @@
 ﻿using MyToDo.Common.Models;
+using MyToDo.shared.Dtos;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -12,16 +13,16 @@ namespace MyToDo.ViewModels
 {
     class IndexViewModel:BindableBase
     {
-        private ObservableCollection<MemoItem> memoItems;
+        private ObservableCollection<MemoDto> memoItems;
 
-        public ObservableCollection<MemoItem> MemoItems
+        public ObservableCollection<MemoDto> MemoItems
         {
             get { return memoItems; }
             set { memoItems = value; }
         }
 
-        private ObservableCollection<ToDoItem> toDos;
-        public ObservableCollection<ToDoItem> ToDos 
+        private ObservableCollection<ToDoDto> toDos;
+        public ObservableCollection<ToDoDto> ToDos 
         { 
             get { return toDos; } 
             set { toDos = value; RaisePropertyChanged(); } 
@@ -31,8 +32,8 @@ namespace MyToDo.ViewModels
         public IndexViewModel()
         {
             TaskBars = new ObservableCollection<TaskBar>();
-            ToDos = new ObservableCollection<ToDoItem>();
-            MemoItems = new ObservableCollection<MemoItem>();
+            ToDos = new ObservableCollection<ToDoDto>();
+            MemoItems = new ObservableCollection<MemoDto>();
             CreateTaskBars();
         }
 
@@ -44,8 +45,8 @@ namespace MyToDo.ViewModels
             TaskBars.Add(new TaskBar() { Icon = "Memory", Title = "备忘录", Contant = "14", Color = "#FFFFA000", Target = "" });
 
             
-            ToDos.Add(new ToDoItem() { Title = "买菜", Content = "去超市买菜", Status = 0});
-            MemoItems.Add(new MemoItem() { Title = "上班", Content = "去公司", Status = 0});
+            ToDos.Add(new ToDoDto() { Title = "买菜", Content = "去超市买菜", Status = 0});
+            MemoItems.Add(new MemoDto() { Title = "上班", Content = "去公司"});
            
         }
 

@@ -1,4 +1,6 @@
 ﻿using MyToDo.Common.Models;
+using MyToDo.Service;
+using MyToDo.shared.Dtos;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -13,10 +15,12 @@ namespace MyToDo.ViewModels
     class MemoViewModel : BindableBase
     {
         private bool isDrawerOpen;
-        private ObservableCollection<MemoItem> memoItems;
+        private ObservableCollection<MemoDto> memoItems;
+        private readonly IMemoService _memoService;
+
         public DelegateCommand OpenDrawerCommand { get; }
 
-        public ObservableCollection<MemoItem> MemoItems
+        public ObservableCollection<MemoDto> MemoItems
 		{
 			get { return memoItems; }
 			set { memoItems = value; }
@@ -30,20 +34,38 @@ namespace MyToDo.ViewModels
 
 		
 
-        public MemoViewModel()
+        public MemoViewModel(IMemoService memoService)
         {
             IsDrawerOpen = false;
             OpenDrawerCommand = new DelegateCommand(OpenDrawer);
+            _memoService = memoService;
 
-            MemoItems = new ObservableCollection<MemoItem>();
-
-            for(int i=0;i<10;i++)
-                MemoItems.Add(new MemoItem() { Title = i.ToString(), Content = (i+i).ToString() });
+            MemoItems = new ObservableCollection<MemoDto>();
+            CreateList();
         }
 
         private void OpenDrawer()
         {
             IsDrawerOpen = true;
+        }
+
+        async void CreateList()
+        {
+            var result = await this._memoService.GetAllAsync(new shared.QueryParameters()
+            {
+                PageIndex = 0,
+                PageSize = 100,
+            });
+
+            if (result.Status)
+            {
+                MemoItems.Clear();
+
+                foreach (var item in result.Result.Items)
+                {
+                    MemoItems.Add(item);
+                }
+            }
         }
     }
 }

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace MyToDo.Service
 {
-    public interface IBaseService<T> where T : class
+    public interface IBaseService<TEntity> where TEntity : class
     {
-        Task<ApiResponse> AddAsync(T t);
-        Task<ApiResponse> UpdateAsync(T t);
+        Task<ApiResponse> AddAsync(TEntity t);
+        Task<ApiResponse> UpdateAsync(TEntity t);
         Task<ApiResponse> DeleteAsync(int id);
 
-        Task<ApiResponse> GetFristOfDefaultAsync(int id);
+        Task<ApiResponse<TEntity>> GetFristOfDefaultAsync(int id);
 
-        Task<ApiResponse> GetAll(QueryParameters param);
+        Task<ApiResponse<PagedList<TEntity>>> GetAllAsync(QueryParameters param);
     }
 }

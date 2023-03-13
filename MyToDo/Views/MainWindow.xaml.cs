@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using MyToDo.Extentions;
+using Prism.Events;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -10,9 +12,20 @@ namespace MyToDo.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(IEventAggregator aggregator)
         {
             InitializeComponent();
+
+            // 注册等待消息窗口
+            aggregator.Register(arg =>
+            {
+                DialogHost.IsOpen = arg.IsOpen;
+
+                if (DialogHost.IsOpen)
+                {
+                    DialogHost.DialogContent = new ProgressView();
+                }
+            });
 
             this.ColorZone.MouseDoubleClick += ColorZone_MouseDoubleClick;
             this.ColorZone.MouseMove += ColorZone_MouseMove;
@@ -43,15 +56,15 @@ namespace MyToDo.Views
 
         private void btnMax_Click(object sender, RoutedEventArgs e)
         {
-            if(this.WindowState==WindowState.Maximized)
+            if (this.WindowState == WindowState.Maximized)
                 this.WindowState = WindowState.Normal;
-            else 
+            else
                 this.WindowState = WindowState.Maximized;
         }
 
         private void btnMin_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState=WindowState.Minimized;
+            this.WindowState = WindowState.Minimized;
         }
 
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

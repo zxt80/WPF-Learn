@@ -22,6 +22,9 @@
     <Compile Update="Views\PersonalizeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ProgressView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SettingView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -49,6 +52,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PersonalizeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProgressView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SettingView.xaml">

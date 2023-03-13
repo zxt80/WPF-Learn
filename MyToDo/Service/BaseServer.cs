@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MyToDo.Service
 {
-    internal class BaseServer<TEntity>:IBaseService<TEntity> where TEntity : class
+    public class BaseServer<TEntity>:IBaseService<TEntity> where TEntity : class
     {
-        protected readonly HttpRestClient _client;
-        protected readonly string _serviceName;
-        public BaseServer(HttpRestClient client, string serviceName) 
+        private readonly HttpRestClient _client;
+        private readonly string _serviceName;
+        public BaseServer(HttpRestClient client, string serviceName)
         {
             _client = client;
             _serviceName = serviceName;
@@ -26,24 +26,40 @@ namespace MyToDo.Service
             return await _client.ExcluteAsync(request);
         }
 
-        public Task<ApiResponse> DeleteAsync(int id)
+        public async Task<ApiResponse> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.Get;
+            request.Route = $"/api/{_serviceName}/Delete?id={id}";
+            request.Parameter = null;
+            return await _client.ExcluteAsync(request);
         }
 
-        public Task<ApiResponse> GetAll(QueryParameters param)
+        public async Task<ApiResponse<PagedList<TEntity>>> GetAllAsync(QueryParameters param)
         {
-            throw new NotImplementedException();
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.Get;
+            request.Route = $"/api/{_serviceName}/GetAll?PageIndex={param.PageIndex}&PageSize={param.PageSize}";
+            request.Parameter = null;
+            return await _client.ExcluteAsync< PagedList < TEntity >> (request);
         }
 
-        public Task<ApiResponse> GetFristOfDefaultAsync(int id)
+        public async Task<ApiResponse<TEntity>> GetFristOfDefaultAsync(int id)
         {
-            throw new NotImplementedException();
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.Get;
+            request.Route = $"/api/{_serviceName}/Delete?id={id}";
+            request.Parameter = null;
+            return await _client.ExcluteAsync<TEntity>(request);
         }
 
-        public Task<ApiResponse> UpdateAsync(TEntity t)
+        public async Task<ApiResponse> UpdateAsync(TEntity t)
         {
-            throw new NotImplementedException();
+            BaseRequest request = new BaseRequest();
+            request.Method = RestSharp.Method.Post;
+            request.Route = $"/api/{_serviceName}/update";
+            request.Parameter = t;
+            return await _client.ExcluteAsync(request);
         }
     }
 }
