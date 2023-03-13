@@ -8,6 +8,8 @@ namespace MyToDo.api.Extentions
     {
         public AutoMapperProFile() {
             CreateMap<ToDo, ToDoDto>().ReverseMap();
+            CreateMap<Memo, MemoDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }

@@ -35,6 +35,8 @@ builder.Services.AddCustomRepository<User, UserRepository>();
 
 //
 builder.Services.AddTransient<IToDoService, ToDoService>();
+builder.Services.AddTransient<IMemoService, MemoService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 // ÅäÖÃautomapper
 var automapper = new MapperConfiguration(config =>

@@ -23,15 +23,12 @@ namespace MyToDo.api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Context")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .IsRequired()

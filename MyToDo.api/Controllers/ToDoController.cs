@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyToDo.api.Context;
 using MyToDo.api.Service;
+using MyToDo.shared;
 using MyToDo.shared.Dtos;
 
 namespace MyToDo.api.Controllers
@@ -18,18 +19,18 @@ namespace MyToDo.api.Controllers
         }
 
         [HttpGet]
-        public async Task<APIResponse> Get(int id) => await this.toDoService.GetSingleAsync(id);
+        public async Task<ApiResponse> Get(int id) => await this.toDoService.GetSingleAsync(id);
         [HttpGet]
-        public async Task<APIResponse> GetAll() => await this.toDoService.GetAllAsync();
+        public async Task<ApiResponse> GetAll([FromQuery] QueryParameters parameters) => await this.toDoService.GetAllAsync(parameters);
 
         [HttpPost]
-        public async Task<APIResponse> Add([FromBody] ToDoDto toDoDto)=>await this.toDoService.AddAsync(toDoDto);
+        public async Task<ApiResponse> Add([FromBody] ToDoDto toDoDto)=>await this.toDoService.AddAsync(toDoDto);
 
         [HttpPost]
-        public async Task<APIResponse> Update([FromBody] ToDoDto toDoDto) => await this.toDoService.UpdateAsync(toDoDto);
+        public async Task<ApiResponse> Update([FromBody] ToDoDto toDoDto) => await this.toDoService.UpdateAsync(toDoDto);
 
         [HttpDelete]
-        public async Task<APIResponse> Update(int id) => await this.toDoService.DeleteAsync(id);
+        public async Task<ApiResponse> Delete(int id) => await this.toDoService.DeleteAsync(id);
 
     }
 }

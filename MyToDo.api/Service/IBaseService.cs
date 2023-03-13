@@ -1,11 +1,13 @@
-﻿namespace MyToDo.api.Service
+﻿using MyToDo.shared;
+
+namespace MyToDo.api.Service
 {
     public interface IBaseService<T>
     {
-        Task<APIResponse> GetAllAsync();
-        Task<APIResponse> GetSingleAsync(int id);
-        Task<APIResponse> AddAsync(T model);
-        Task<APIResponse> UpdateAsync(T model);
-        Task<APIResponse> DeleteAsync(int id);
+        Task<ApiResponse> GetAllAsync(QueryParameters parameter);
+        Task<ApiResponse> GetSingleAsync(int id);
+        Task<ApiResponse> AddAsync(T model);
+        Task<ApiResponse> UpdateAsync(T model);
+        Task<ApiResponse> DeleteAsync(int id);
     }
 }

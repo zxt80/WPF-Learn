@@ -18,8 +18,7 @@ namespace MyToDo.api.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Context = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },

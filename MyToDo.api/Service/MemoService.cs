@@ -3,25 +3,26 @@ using AutoMapper;
 using MyToDo.api.Context;
 using MyToDo.shared;
 using MyToDo.shared.Dtos;
+using System.Reflection.Metadata;
 
 namespace MyToDo.api.Service
 {
-    public class ToDoService : IToDoService
+    public class MemoService : IMemoService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ToDoService(IUnitOfWork unitOfWork, IMapper mapper)
+        public MemoService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<ApiResponse> AddAsync(ToDoDto model)
+        public async Task<ApiResponse> AddAsync(MemoDto model)
         {
             try
             {
-                var todo = _mapper.Map<ToDo>(model);
-                await _unitOfWork.GetRepository<ToDo>().InsertAsync(todo);
+                var memo = _mapper.Map<Memo>(model);
+                await _unitOfWork.GetRepository<Memo>().InsertAsync(memo);
                 if (await _unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
                 return new ApiResponse("添加数据失败");
@@ -36,9 +37,9 @@ namespace MyToDo.api.Service
         {
             try
             {
-                var repository = _unitOfWork.GetRepository<ToDo>();
-                var todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
-                repository.Delete(todo);
+                var repository = _unitOfWork.GetRepository<Memo>();
+                var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+                repository.Delete(memo);
 
                 if (await _unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, "");
@@ -54,13 +55,13 @@ namespace MyToDo.api.Service
         {
             try
             {
-                var repository = _unitOfWork.GetRepository<ToDo>();
-                var todos = await repository.GetPagedListAsync(predicate:
+                var repository = _unitOfWork.GetRepository<Memo>();
+                var memos = await repository.GetPagedListAsync(predicate:
                 x => string.IsNullOrEmpty(parameter.Search) ? true : x.Title.Equals(parameter.Search),
                 pageIndex: parameter.PageIndex,
                     pageSize: parameter.PageSize,
                     orderBy: source => source.OrderByDescending(t => t.CreateTime));
-                return new ApiResponse(true, todos);
+                return new ApiResponse(true, memos);
             }
             catch (Exception ex)
             {
@@ -72,9 +73,9 @@ namespace MyToDo.api.Service
         {
             try
             {
-                var repository = _unitOfWork.GetRepository<ToDo>();
-                var todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
-                return new ApiResponse(true, todo);
+                var repository = _unitOfWork.GetRepository<Memo>();
+                var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+                return new ApiResponse(true, memo);
             }
             catch (Exception ex)
             {
@@ -82,21 +83,20 @@ namespace MyToDo.api.Service
             }
         }
 
-        public async Task<ApiResponse> UpdateAsync(ToDoDto model)
+        public async Task<ApiResponse> UpdateAsync(MemoDto model)
         {
             try
             {
-                var todoOld = _mapper.Map<ToDo>(model);
+                var memoOld = _mapper.Map<Memo>(model);
                 var repository = _unitOfWork.GetRepository<ToDo>();
-                var todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
-                todo.Title = todoOld.Title;
-                todo.Content = todoOld.Content;
-                todo.Status = todoOld.Status;
-                todo.UpdateTime = DateTime.Now;
-                repository.Update(todo);
+                var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+                memo.Title = memoOld.Title;
+                memo.Content = memoOld.Content;
+                memo.UpdateTime = DateTime.Now;
+                repository.Update(memo);
 
-                if ( await _unitOfWork.SaveChangesAsync() > 0)
-                    return new ApiResponse(true, todo);
+                if (await _unitOfWork.SaveChangesAsync() > 0)
+                    return new ApiResponse(true, memo);
                 return new ApiResponse("更新数据失败");
             }
             catch (Exception ex)

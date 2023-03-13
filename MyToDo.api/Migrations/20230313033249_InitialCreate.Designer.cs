@@ -11,7 +11,7 @@ using MyToDo.api.Context;
 namespace MyToDo.api.Migrations
 {
     [DbContext(typeof(MyToDoContext))]
-    [Migration("20230312081927_InitialCreate")]
+    [Migration("20230313033249_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -26,15 +26,12 @@ namespace MyToDo.api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Context")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .IsRequired()
