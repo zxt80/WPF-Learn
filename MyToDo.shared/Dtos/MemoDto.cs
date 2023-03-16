@@ -23,5 +23,15 @@ namespace MyToDo.shared.Dtos
             set { content = value; OnPropertyChanged(); }
         }
 
+        public object Clone()
+        {
+            MemoDto memo = new MemoDto();
+            memo.Title = Title;
+            memo.Content = Content;
+            memo.Id = Id;
+
+            return memo;
+        }
+
     }
 }

@@ -2,13 +2,18 @@
     x:Class="MyToDo.Views.MemoView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cv="clr-namespace:MyToDo.Common.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:MyToDo.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <cv:IntToVisibilityConverter x:Key="IntToVisibility" />
+    </UserControl.Resources>
     <materialDesign:DialogHost>
         <materialDesign:DrawerHost IsRightDrawerOpen="{Binding IsDrawerOpen}">
             <materialDesign:DrawerHost.RightDrawerContent>
@@ -27,17 +32,20 @@
                         Margin="0,10"
                         HorizontalAlignment="Left"
                         materialDesign:HintAssist.Hint="请输入备忘标题"
-                        DockPanel.Dock="Top" />
+                        DockPanel.Dock="Top"
+                        Text="{Binding CurrentMemo.Title}" />
                     <TextBox
                         Width="200"
                         Margin="0,10"
                         HorizontalAlignment="Left"
                         materialDesign:HintAssist.Hint="请输入备忘内容"
-                        DockPanel.Dock="Top" />
+                        DockPanel.Dock="Top"
+                        Text="{Binding CurrentMemo.Content}" />
 
                     <Button
                         Margin="0,20"
-                        Content="添加备忘录"
+                        Command="{Binding AddOrUpdateCommand}"
+                        Content="{Binding BtnText}"
                         DockPanel.Dock="Top" />
 
                 </DockPanel>
@@ -57,18 +65,39 @@
                             x:Name="SearchBox"
                             Width="200"
                             Height="30"
-                            materialDesign:HintAssist.Hint="查找备忘录"
-                            materialDesign:TextFieldAssist.HasClearButton="True" />
+                            materialDesign:HintAssist.Hint="查找备忘录..."
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
 
                     </StackPanel>
                     <Button
                         x:Name="AddBtn"
-                        Command="{Binding OpenDrawerCommand}"
+                        Command="{Binding AddMemoCommand}"
                         Content="+ 新增备忘录"
                         DockPanel.Dock="Right"
                         Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
                         ToolTip="新增备忘事项" />
                 </DockPanel>
+
+                <StackPanel
+                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    Cursor=""
+                    Visibility="{Binding MemoItems.Count, Converter={StaticResource IntToVisibility}}">
+                    <Image
+                        Width="120"
+                        Height="120"
+                        Source="/Images/wind.png" />
+                    <TextBlock
+                        Margin="0,10"
+                        HorizontalAlignment="Center"
+                        FontSize="18"
+                        Text="尝试添加一些备忘录，以便在此处查看它们。" />
+                </StackPanel>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <ItemsControl ItemsSource="{Binding MemoItems}">
@@ -81,6 +110,62 @@
                         <ItemsControl.ItemTemplate>
 
                             <DataTemplate>
+                                <Grid
+                                    Width="180"
+                                    MinHeight=" 120"
+                                    MaxHeight="180"
+                                    Margin="4">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.EditeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <materialDesign:PopupBox HorizontalAlignment="Right" Panel.ZIndex="1">
+                                        <Button
+                                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            Content="删除" />
+                                    </materialDesign:PopupBox>
+
+                                    <Border
+                                        Grid.RowSpan="2"
+                                        Background="#1E90FF"
+                                        CornerRadius="3" />
+
+                                    <TextBlock
+                                        Padding="10,15,0,0"
+                                        FontWeight="Bold"
+                                        Text="{Binding Title}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Padding="10,15,0,0"
+                                        Text="{Binding Content}" />
+                                    <Canvas Grid.RowSpan="2" ClipToBounds="True">
+                                        <Border
+                                            Canvas.Top="10"
+                                            Canvas.Right="-50"
+                                            Width="120"
+                                            Height="120"
+                                            Background="#FFFFFF"
+                                            CornerRadius="100"
+                                            Opacity="0.1" />
+                                        <Border
+                                            Canvas.Top="80"
+                                            Canvas.Right="-30"
+                                            Width="120"
+                                            Height="120"
+                                            Background="#FFFFFF"
+                                            CornerRadius="100"
+                                            Opacity="0.1" />
+                                    </Canvas>
+                                </Grid>
+                            </DataTemplate>
+                            <!--<DataTemplate>
                                 <Border
                                     Width="180"
                                     Height="100"
@@ -146,7 +231,7 @@
                                         </Canvas>
                                     </Grid>
                                 </Border>
-                            </DataTemplate>
+                            </DataTemplate>-->
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>

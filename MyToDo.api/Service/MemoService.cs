@@ -58,7 +58,7 @@ namespace MyToDo.api.Service
             {
                 var repository = _unitOfWork.GetRepository<Memo>();
                 var memos = await repository.GetPagedListAsync(predicate:
-                x => string.IsNullOrEmpty(parameter.Search) ? true : x.Title.Equals(parameter.Search),
+                x => string.IsNullOrEmpty(parameter.Search) ? true : x.Title.Contains(parameter.Search),
                 pageIndex: parameter.PageIndex,
                     pageSize: parameter.PageSize,
                     orderBy: source => source.OrderByDescending(t => t.CreateTime));
@@ -89,7 +89,7 @@ namespace MyToDo.api.Service
             try
             {
                 var memoOld = _mapper.Map<Memo>(model);
-                var repository = _unitOfWork.GetRepository<ToDo>();
+                var repository = _unitOfWork.GetRepository<Memo>();
                 var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
                 memo.Title = memoOld.Title;
                 memo.Content = memoOld.Content;
