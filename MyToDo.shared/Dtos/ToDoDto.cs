@@ -1,6 +1,6 @@
 ﻿namespace MyToDo.shared.Dtos
 {
-    public class ToDoDto : BaseDto
+    public class ToDoDto : BaseDto,ICloneable
     {
         private string title;
         private string content;
@@ -22,6 +22,17 @@
         {
             get { return status; }
             set { status = value; OnPropertyChanged(); }
+        }
+
+        public object Clone()
+        {
+            ToDoDto toDoDto = new ToDoDto();
+            toDoDto.Title = Title;
+            toDoDto.Content = Content;
+            toDoDto.Status = Status;
+            toDoDto.Id = Id;
+
+            return toDoDto;
         }
     }
 }

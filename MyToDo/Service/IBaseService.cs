@@ -1,4 +1,5 @@
 ﻿using MyToDo.shared;
+using MyToDo.shared.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MyToDo.Service
 {
     public interface IBaseService<TEntity> where TEntity : class
     {
-        Task<ApiResponse> AddAsync(TEntity t);
+        Task<ApiResponse<TEntity>> AddAsync(TEntity t);
         Task<ApiResponse> UpdateAsync(TEntity t);
         Task<ApiResponse> DeleteAsync(int id);
 

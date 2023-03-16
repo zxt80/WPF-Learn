@@ -3,6 +3,7 @@ using AutoMapper;
 using MyToDo.api.Context;
 using MyToDo.shared;
 using MyToDo.shared.Dtos;
+using MyToDo.shared.Parameters;
 
 namespace MyToDo.api.Service
 {
@@ -23,7 +24,7 @@ namespace MyToDo.api.Service
                 var todo = _mapper.Map<ToDo>(model);
                 await _unitOfWork.GetRepository<ToDo>().InsertAsync(todo);
                 if (await _unitOfWork.SaveChangesAsync() > 0)
-                    return new ApiResponse(true, model);
+                    return new ApiResponse(true, todo);
                 return new ApiResponse("添加数据失败");
             }
             catch (Exception ex)
@@ -56,7 +57,28 @@ namespace MyToDo.api.Service
             {
                 var repository = _unitOfWork.GetRepository<ToDo>();
                 var todos = await repository.GetPagedListAsync(predicate:
-                x => string.IsNullOrEmpty(parameter.Search) ? true : x.Title.Equals(parameter.Search),
+                x => string.IsNullOrEmpty(parameter.Search) ? true : x.Title.Contains(parameter.Search),
+                pageIndex: parameter.PageIndex,
+                    pageSize: parameter.PageSize,
+                    orderBy: source => source.OrderByDescending(t => t.CreateTime));
+                return new ApiResponse(true, todos);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.ToString());
+            }
+        }
+
+        public async Task<ApiResponse> GetAllFilterAsync(ToDoParameter parameter)
+        {
+            try
+            {
+                var repository = _unitOfWork.GetRepository<ToDo>();
+                var todos = await repository.GetPagedListAsync(predicate:
+                (x => (
+                (string.IsNullOrEmpty(parameter.Search) ? true : x.Title.Contains(parameter.Search)) && 
+                (parameter.Status!=null?(parameter.Status==x.Status):true))
+                ),
                 pageIndex: parameter.PageIndex,
                     pageSize: parameter.PageSize,
                     orderBy: source => source.OrderByDescending(t => t.CreateTime));
@@ -89,14 +111,17 @@ namespace MyToDo.api.Service
                 var todoOld = _mapper.Map<ToDo>(model);
                 var repository = _unitOfWork.GetRepository<ToDo>();
                 var todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
-                todo.Title = todoOld.Title;
-                todo.Content = todoOld.Content;
-                todo.Status = todoOld.Status;
-                todo.UpdateTime = DateTime.Now;
-                repository.Update(todo);
+                if(todo!=null)
+                {
+                    todo.Title = todoOld.Title;
+                    todo.Content = todoOld.Content;
+                    todo.Status = todoOld.Status;
+                    todo.UpdateTime = DateTime.Now;
+                    repository.Update(todo);
 
-                if ( await _unitOfWork.SaveChangesAsync() > 0)
-                    return new ApiResponse(true, todo);
+                    if (await _unitOfWork.SaveChangesAsync() > 0)
+                        return new ApiResponse(true, todo);                    
+                }
                 return new ApiResponse("更新数据失败");
             }
             catch (Exception ex)

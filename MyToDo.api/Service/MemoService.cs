@@ -3,6 +3,7 @@ using AutoMapper;
 using MyToDo.api.Context;
 using MyToDo.shared;
 using MyToDo.shared.Dtos;
+using MyToDo.shared.Parameters;
 using System.Reflection.Metadata;
 
 namespace MyToDo.api.Service
@@ -24,7 +25,7 @@ namespace MyToDo.api.Service
                 var memo = _mapper.Map<Memo>(model);
                 await _unitOfWork.GetRepository<Memo>().InsertAsync(memo);
                 if (await _unitOfWork.SaveChangesAsync() > 0)
-                    return new ApiResponse(true, model);
+                    return new ApiResponse(true, memo);
                 return new ApiResponse("添加数据失败");
             }
             catch (Exception ex)

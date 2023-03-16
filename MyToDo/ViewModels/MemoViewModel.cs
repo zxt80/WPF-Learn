@@ -1,6 +1,7 @@
 ﻿using MyToDo.Common.Models;
 using MyToDo.Service;
 using MyToDo.shared.Dtos;
+using MyToDo.shared.Parameters;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -51,7 +52,7 @@ namespace MyToDo.ViewModels
 
         async void CreateList()
         {
-            var result = await this._memoService.GetAllAsync(new shared.QueryParameters()
+            var result = await this._memoService.GetAllAsync(new QueryParameters()
             {
                 PageIndex = 0,
                 PageSize = 100,

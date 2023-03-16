@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FuncA_Module": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:26425;http://localhost:26426"
+    }
+  }
+}

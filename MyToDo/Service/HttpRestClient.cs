@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Security.Policy;
 
 namespace MyToDo.Service
 {
@@ -18,21 +19,23 @@ namespace MyToDo.Service
             this._apiUrl = apiUrl;
         }
 
-        public async Task<ApiResponse> ExcluteAsync(BaseRequest parameter)
+        public async Task<ApiResponse> ExcluteAsync(BaseRequest baseRequest)
         {
-            var request = new RestRequest();
-            request.AddHeader("Content-Type", parameter.ContentType);
+            var request = new RestRequest(baseRequest.Method);
+            request.AddHeader("Content-Type", baseRequest.ContentType);
 
-            if(parameter.Parameter!=null)
-                request.AddParameter(
-                    "param", JsonConvert.SerializeObject(parameter.Parameter), 
-                    ParameterType.RequestBody);
-
-            var client = new RestClient(_apiUrl + parameter.Route);
+            if (baseRequest.Parameter != null)
+                request.AddParameter("param", JsonConvert.SerializeObject(baseRequest.Parameter), ParameterType.RequestBody);
+            var url = new Uri(_apiUrl + baseRequest.Route);
+            RestClient client = new RestClient(url);
             
             var response = await client.ExecuteAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return JsonConvert.DeserializeObject<ApiResponse>(response.Content);
 
-            return JsonConvert.DeserializeObject<ApiResponse>(response.Content);
+            else
+                return new ApiResponse(response.ErrorMessage);
+
         }
 
         public async Task<ApiResponse<T>> ExcluteAsync<T>(BaseRequest parameter)
